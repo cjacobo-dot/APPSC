@@ -1,4 +1,4 @@
-console.log('🔵 Iniciando backend');
+console.log('Iniciando backend');
 
 const express = require('express');
 const cors = require('cors');
@@ -17,7 +17,7 @@ sequelize.authenticate()
   .then(() => {
     console.log(' Conectado a MySQL');
     app.listen(PUERTO, () => {
-      console.log(`🚀 Servidor en http://localhost:${PUERTO}`);
+      console.log(`Servidor en http://localhost:${PUERTO}`);
     });
   })
   .catch((err) => {

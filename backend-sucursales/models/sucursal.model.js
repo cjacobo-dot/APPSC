@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-// Definimos el modelo de sucursal
 const Sucursal = sequelize.define('Sucursal', {
   id: {
     type: DataTypes.INTEGER,

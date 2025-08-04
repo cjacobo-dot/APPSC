@@ -23,6 +23,19 @@ const sequelize = new Sequelize('sucursales_db', 'root', '', {
  dialect: 'mysql',
  });
 
+QUERY:
+
+CREATE TABLE sucursales (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(255) NOT NULL,
+  direccion VARCHAR(255) NOT NULL,
+  telefono VARCHAR(255),
+  activa BOOLEAN DEFAULT TRUE,
+  fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+  fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
 4. Instalar dependencias
 Backend:
  cd backend

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const SucursalForm = ({ onAdd }) => {
+const SucursalForm = ({ sucursalEditando, onSubmitCallback }) => {
   const [form, setForm] = useState({
     nombre: '',
     direccion: '',
@@ -9,9 +9,22 @@ const SucursalForm = ({ onAdd }) => {
     activa: true
   });
 
+  useEffect(() => {
+    if (sucursalEditando) {
+      setForm({
+        nombre: sucursalEditando.nombre,
+        direccion: sucursalEditando.direccion,
+        telefono: sucursalEditando.telefono,
+        activa: sucursalEditando.activa
+      });
+    } else {
+      setForm({ nombre: '', direccion: '', telefono: '', activa: true });
+    }
+  }, [sucursalEditando]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
@@ -19,27 +32,25 @@ const SucursalForm = ({ onAdd }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post('http://localhost:3000/sucursales', form);
-
-      if (response.status === 201 || response.status === 200) {
-        alert(' Sucursal creada');
-        setForm({ nombre: '', direccion: '', telefono: '', activa: true });
-        if (onAdd) onAdd(); 
+      if (sucursalEditando) {
+        await axios.put(`http://localhost:3000/sucursales/${sucursalEditando.id}`, form);
+        alert('Sucursal actualizada');
       } else {
-        alert('Algo salió mal al crear la sucursal.');
+        await axios.post('http://localhost:3000/sucursales', form);
+        alert('Sucursal creada');
       }
-
+      if (onSubmitCallback) onSubmitCallback();
+      setForm({ nombre: '', direccion: '', telefono: '', activa: true });
     } catch (error) {
-      console.error('Error creando sucursal:', error);
-      alert(' Error al conectar con el servidor.');
+      console.error('Error al guardar:', error);
+      alert('Error al conectar con el servidor.');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Nueva sucursal</h2>
+      <h2>{sucursalEditando ? 'Editar Sucursal' : 'Nueva Sucursal'}</h2>
       <input
         name="nombre"
         placeholder="Nombre"
@@ -69,12 +80,13 @@ const SucursalForm = ({ onAdd }) => {
           onChange={handleChange}
         />
       </label>
-      <button type="submit">Guardar</button>
+      <button type="submit">{sucursalEditando ? 'Actualizar' : 'Guardar'}</button>
     </form>
   );
 };
 
 export default SucursalForm;
+
 
 
 

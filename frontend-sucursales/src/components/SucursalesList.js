@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const SucursalLista = () => {
+const SucursalList = ({ onEditar, triggerUpdate }) => {
   const [sucursales, setSucursales] = useState([]);
 
   const cargarSucursales = async () => {
@@ -15,7 +15,6 @@ const SucursalLista = () => {
 
   const eliminarSucursal = async (id) => {
     if (!window.confirm('¿Eliminar esta sucursal?')) return;
-
     try {
       await axios.delete(`http://localhost:3000/sucursales/${id}`);
       cargarSucursales();
@@ -26,7 +25,7 @@ const SucursalLista = () => {
 
   useEffect(() => {
     cargarSucursales();
-  }, []);
+  }, [triggerUpdate]);
 
   return (
     <div>
@@ -52,6 +51,7 @@ const SucursalLista = () => {
                 <td>{s.telefono}</td>
                 <td>{s.activa ? 'Sí' : 'No'}</td>
                 <td>
+                  <button onClick={() => onEditar(s)}>Editar</button>
                   <button onClick={() => eliminarSucursal(s.id)}>Eliminar</button>
                 </td>
               </tr>
@@ -63,4 +63,5 @@ const SucursalLista = () => {
   );
 };
 
-export default SucursalLista;
+export default SucursalList;
+

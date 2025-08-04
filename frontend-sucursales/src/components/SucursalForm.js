@@ -24,16 +24,16 @@ const SucursalForm = ({ onAdd }) => {
       const response = await axios.post('http://localhost:3000/sucursales', form);
 
       if (response.status === 201 || response.status === 200) {
-        alert('✅ Sucursal creada');
+        alert(' Sucursal creada');
         setForm({ nombre: '', direccion: '', telefono: '', activa: true });
-        if (onAdd) onAdd(); // Recargar la lista si está disponible
+        if (onAdd) onAdd(); 
       } else {
-        alert('❌ Algo salió mal al crear la sucursal.');
+        alert('Algo salió mal al crear la sucursal.');
       }
 
     } catch (error) {
       console.error('Error creando sucursal:', error);
-      alert('❌ Error al conectar con el servidor.');
+      alert(' Error al conectar con el servidor.');
     }
   };
 
